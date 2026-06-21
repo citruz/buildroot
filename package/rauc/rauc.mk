@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RAUC_VERSION = 1.11
+RAUC_VERSION = 1.13
 RAUC_SITE = https://github.com/rauc/rauc/releases/download/v$(RAUC_VERSION)
 RAUC_SOURCE = rauc-$(RAUC_VERSION).tar.xz
 RAUC_LICENSE = LGPL-2.1
@@ -12,6 +12,9 @@ RAUC_LICENSE_FILES = COPYING
 RAUC_CPE_ID_VENDOR = pengutronix
 RAUC_DEPENDENCIES = host-pkgconf openssl libglib2
 RAUC_CONF_OPTS += -Dtests=false
+
+# 0001-fix-cve-2026-34155.patch
+RAUC_IGNORE_CVES += CVE-2026-34155
 
 ifeq ($(BR2_PACKAGE_RAUC_DBUS),y)
 RAUC_CONF_OPTS += -Dservice=true

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IPTABLES_VERSION = 1.8.9
+IPTABLES_VERSION = 1.8.11
 IPTABLES_SOURCE = iptables-$(IPTABLES_VERSION).tar.xz
 IPTABLES_SITE = https://netfilter.org/projects/iptables/files
 IPTABLES_INSTALL_STAGING = YES
@@ -47,6 +47,15 @@ IPTABLES_CONF_OPTS += --enable-bpf-compiler --enable-nfsynproxy
 IPTABLES_DEPENDENCIES += libpcap
 else
 IPTABLES_CONF_OPTS += --disable-bpf-compiler --disable-nfsynproxy
+endif
+
+ifeq ($(BR2_PACKAGE_IPTABLES_NFTABLES_DEFAULT),y)
+define IPTABLES_INSTALL_SYMLINK
+	ln -fs xtables-nft-multi $(TARGET_DIR)/usr/sbin/iptables
+	ln -fs xtables-nft-multi $(TARGET_DIR)/usr/sbin/ip6tables
+endef
+
+IPTABLES_POST_INSTALL_TARGET_HOOKS += IPTABLES_INSTALL_SYMLINK
 endif
 
 define IPTABLES_LINUX_CONFIG_FIXUPS

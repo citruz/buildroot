@@ -5,29 +5,25 @@
 ################################################################################
 
 MPD_VERSION_MAJOR = 0.23
-MPD_VERSION = $(MPD_VERSION_MAJOR).14
+MPD_VERSION = $(MPD_VERSION_MAJOR).17
 MPD_SOURCE = mpd-$(MPD_VERSION).tar.xz
 MPD_SITE = https://www.musicpd.org/download/mpd/$(MPD_VERSION_MAJOR)
 MPD_DEPENDENCIES = host-pkgconf boost fmt
 MPD_LICENSE = GPL-2.0+
 MPD_LICENSE_FILES = COPYING
-# these refer to the FreeBSD PPP daemon
-MPD_IGNORE_CVES = CVE-2020-7465 CVE-2020-7466
+
+MPD_CPE_ID_VENDOR = musicpd
+MPD_CPE_ID_PRODUCT = music_player_demon
+
 MPD_SELINUX_MODULES = mpd
 MPD_CONF_OPTS = \
 	-Daudiofile=disabled \
 	-Ddocumentation=disabled \
+	-Dhtml_manual=false \
+	-Dmanpages=false \
 	-Dopenmpt=disabled \
 	-Dpipewire=disabled \
 	-Dsnapcast=false
-
-# Zeroconf support depends on libdns_sd from avahi.
-ifeq ($(BR2_PACKAGE_MPD_AVAHI_SUPPORT),y)
-MPD_DEPENDENCIES += avahi
-MPD_CONF_OPTS += -Dzeroconf=avahi
-else
-MPD_CONF_OPTS += -Dzeroconf=disabled
-endif
 
 ifeq ($(BR2_PACKAGE_EXPAT),y)
 MPD_DEPENDENCIES += expat
@@ -51,11 +47,27 @@ else
 MPD_CONF_OPTS += -Dyajl=disabled
 endif
 
+# uClibc w/o locales
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+MPD_DEPENDENCIES += libiconv
+MPD_CONF_OPTS += -Diconv=enabled
+else
+MPD_CONF_OPTS += -Diconv=disabled
+endif
+
 ifeq ($(BR2_PACKAGE_MPD_ALSA),y)
 MPD_DEPENDENCIES += alsa-lib
 MPD_CONF_OPTS += -Dalsa=enabled
 else
 MPD_CONF_OPTS += -Dalsa=disabled
+endif
+
+# Zeroconf support depends on libdns_sd from avahi.
+ifeq ($(BR2_PACKAGE_MPD_AVAHI_SUPPORT),y)
+MPD_DEPENDENCIES += avahi
+MPD_CONF_OPTS += -Dzeroconf=avahi
+else
+MPD_CONF_OPTS += -Dzeroconf=disabled
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_AO),y)

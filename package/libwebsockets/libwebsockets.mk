@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBWEBSOCKETS_VERSION = 4.3.2
+LIBWEBSOCKETS_VERSION = 4.3.3
 LIBWEBSOCKETS_SITE = $(call github,warmcat,libwebsockets,v$(LIBWEBSOCKETS_VERSION))
 LIBWEBSOCKETS_LICENSE = MIT with exceptions
 LIBWEBSOCKETS_LICENSE_FILES = LICENSE
@@ -18,15 +18,14 @@ LIBWEBSOCKETS_CONF_OPTS = \
 	-DLWS_WITHOUT_EXTENSIONS=OFF
 
 # If LWS_MAX_SMP=1, then there is no code related to pthreads compiled
-# in the library. If unset, LWS_MAX_SMP defaults to 32 and a small
-# amount of pthread mutex code is built into the library.
+# in the library. If unset, LWS_MAX_SMP defaults to 1.
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
 LIBWEBSOCKETS_CONF_OPTS += \
 	-DLWS_MAX_SMP=1 \
 	-DLWS_WITH_SYS_SMD=OFF
 else
 LIBWEBSOCKETS_CONF_OPTS += \
-	-DLWS_MAX_SMP= \
+	-DLWS_MAX_SMP=32 \
 	-DLWS_WITH_SYS_SMD=ON
 endif
 
@@ -96,6 +95,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS_EXT_POLL),y)
 LIBWEBSOCKETS_CONF_OPTS += -DLWS_WITH_EXTERNAL_POLL=ON
+endif
+
+ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS_ASYNC_DNS),y)
+LIBWEBSOCKETS_CONF_OPTS += -DLWS_WITH_SYS_ASYNC_DNS=ON
 endif
 
 $(eval $(cmake-package))

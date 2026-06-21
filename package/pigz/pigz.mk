@@ -5,7 +5,7 @@
 ################################################################################
 
 PIGZ_VERSION = 2.8
-PIGZ_SITE = http://zlib.net/pigz
+PIGZ_SITE = https://zlib.net/pigz
 PIGZ_DEPENDENCIES = zlib
 HOST_PIGZ_DEPENDENCIES = host-zlib
 PIGZ_LICENSE = Zlib
@@ -22,10 +22,12 @@ endef
 
 define PIGZ_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/pigz $(TARGET_DIR)/usr/bin/pigz
+	ln -sf pigz $(TARGET_DIR)/usr/bin/unpigz
 endef
 
 define HOST_PIGZ_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/pigz $(HOST_DIR)/bin/pigz
+	ln -sf pigz $(HOST_DIR)/usr/bin/unpigz
 endef
 
 $(eval $(generic-package))

@@ -9,6 +9,7 @@ config BR2_PACKAGE_LUVI
 	select BR2_PACKAGE_LIBUV
 	select BR2_PACKAGE_LUV
 	select BR2_PACKAGE_LIBOPENSSL_ENABLE_DES if BR2_PACKAGE_LIBOPENSSL
+	select BR2_PACKAGE_LIBOPENSSL_ENGINES if BR2_PACKAGE_LIBOPENSSL
 	help
 	  A project in-between luv and luvit. The goal of this is to
 	  make building luvit and derivatives much easier.
@@ -20,7 +21,7 @@ config BR2_PACKAGE_LUVI
 	  The luvi core can be extended with several Lua modules by
 	  adding its bundled Lua binding libraries.
 	  To get the Lua module...
-	    * 'rex' select PCRE (BR2_PACKAGE_PCRE)
+	    * 'rex' select PCRE2 (BR2_PACKAGE_PCRE2)
 	    * 'ssl' select OpenSSL (BR2_PACKAGE_OPENSSL)
 	    * 'zlib' select zlib (BR2_PACKAGE_ZLIB)
 

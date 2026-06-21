@@ -4,16 +4,19 @@
 #
 ################################################################################
 
-FREETYPE_VERSION = 2.13.2
+FREETYPE_VERSION = 2.13.3
 FREETYPE_SOURCE = freetype-$(FREETYPE_VERSION).tar.xz
 FREETYPE_SITE = http://download.savannah.gnu.org/releases/freetype
 FREETYPE_INSTALL_STAGING = YES
 FREETYPE_MAKE_OPTS = CCexe="$(HOSTCC)"
-FREETYPE_LICENSE = Dual FTL/GPL-2.0+
+FREETYPE_LICENSE = FTL or GPL-2.0+
 FREETYPE_LICENSE_FILES = LICENSE.TXT docs/FTL.TXT docs/GPLv2.TXT
 FREETYPE_CPE_ID_VENDOR = freetype
 FREETYPE_DEPENDENCIES = host-pkgconf
 FREETYPE_CONFIG_SCRIPTS = freetype-config
+
+# 0001-Check-for-overflow-in-array-size-computation.patch
+FREETYPE_IGNORE_CVES += CVE-2026-23865
 
 # harfbuzz already depends on freetype so disable harfbuzz in freetype to avoid
 # a circular dependency
